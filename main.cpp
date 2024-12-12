@@ -14,16 +14,22 @@ struct Student {
 };
 
 struct StudentManager {
-    Student students[MAX_STUDENTS];
-    int studentCount;
+    struct Student students[MAX_STUDENTS] = {
+        {"1", "Alice", 20, 80},
+        {"2", "Bob", 19, 73},
+        {"3", "Charlie", 21, 85},
+        {"4", "John", 20, 94},
+        {"5", "Zack", 23, 60}
+    };
+    int studentCount = 5;
 
     void init() {
-        studentCount = 0;
+        studentCount = 5;
     }
 
     void addStudent(const char* id, const char* name, int age, double grade) {
         if (studentCount >= MAX_STUDENTS) {
-            cout << "學生數量已達上限，無法新增！" << endl;
+            cout << "has reached the limit of student" << endl;
             return;
         }
         strcpy(students[studentCount].id, id);
@@ -31,13 +37,13 @@ struct StudentManager {
         students[studentCount].age = age;
         students[studentCount].grade = grade;
         studentCount++;
-        cout << "新增學生成功！" << endl;
+        cout << "student add successfully" << endl;
     }
 
     void displayAllStudents() {
         for (int i = 0; i < studentCount; i++) {
-            cout << "學號: " << students[i].id << ", 姓名: " << students[i].name
-                 << ", 年齡: " << students[i].age << ", 成績: " << students[i].grade << endl;
+            cout << "ID: " << students[i].id << ", Name: " << students[i].name
+                 << ", Age: " << students[i].age << ", Grade: " << students[i].grade << endl;
         }
     }
 
@@ -91,16 +97,16 @@ struct StudentManager {
             int mid = left + (right - left) / 2;
             int cmp = strcmp(students[mid].id, id);
             if (cmp == 0) {
-                cout << "找到學生: 學號: " << students[mid].id
-                     << ", 姓名: " << students[mid].name
-                     << ", 年齡: " << students[mid].age
-                     << ", 成績: " << students[mid].grade << endl;
+                cout << "Find student:\n ID: " << students[mid].id
+                     << ", Name:  " << students[mid].name
+                     << ", Age: " << students[mid].age
+                     << ", Grade: " << students[mid].grade << endl;
                 return;
             }
             if (cmp < 0) left = mid + 1;
             else right = mid - 1;
         }
-        cout << "未找到學號為 " << id << " 的學生。" << endl;
+        cout << "Doesn't find the student with ID: " << id << endl;
     }
 };
 
@@ -108,41 +114,18 @@ int main() {
     StudentManager manager;
     manager.init();
 
-    int n;
-    cout << "請輸入初始學生數量: ";
-    cin >> n;
-    cin.ignore();  // 清除輸入緩衝區
-
-    for (int i = 0; i < n; i++) {
-        char id[MAX_ID_LEN], name[MAX_NAME_LEN];
-        int age;
-        double grade;
-
-        cout << "請輸入學生 " << i + 1 << " 的學號: ";
-        cin.getline(id, MAX_ID_LEN);
-        cout << "請輸入學生 " << i + 1 << " 的姓名: ";
-        cin.getline(name, MAX_NAME_LEN);
-        cout << "請輸入學生 " << i + 1 << " 的年齡: ";
-        cin >> age;
-        cout << "請輸入學生 " << i + 1 << " 的成績: ";
-        cin >> grade;
-        cin.ignore();  // 清除輸入緩衝區
-
-        manager.addStudent(id, name, age, grade);
-    }
-
-    while (true) {
+    while(true) {
         int choice;
-        cout << "\n=== 功能選單 ===\n";
-        cout << "1. 顯示所有學生\n";
-        cout << "2. 新增學生\n";
-        cout << "3. 按名字排序並顯示\n";
-        cout << "4. 按成績排序並顯示\n";
-        cout << "5. 查詢學生 (依學號)\n";
-        cout << "6. 結束程式\n";
-        cout << "請選擇功能: ";
+        cout << "\n=== Function lists===\n";
+        cout << "1. Show all student\n";
+        cout << "2. Add student\n";
+        cout << "3. Sort with name and display\n";
+        cout << "4. Sort with grade and display\n";
+        cout << "5. Search student ( by ID )\n";
+        cout << "6. End program\n";
+        cout << "Choose a function: ";
         cin >> choice;
-        cin.ignore();  // 清除輸入緩衝區
+        cin.ignore();
 
         if (choice == 1) {
             manager.displayAllStudents();
@@ -151,15 +134,15 @@ int main() {
             int age;
             double grade;
 
-            cout << "請輸入新學生的學號: ";
+            cout << "Enter new student's ID: ";
             cin.getline(id, MAX_ID_LEN);
-            cout << "請輸入新學生的姓名: ";
+            cout << "Enter new student's name: ";
             cin.getline(name, MAX_NAME_LEN);
-            cout << "請輸入新學生的年齡: ";
+            cout << "Enter new student's age: ";
             cin >> age;
-            cout << "請輸入新學生的成績: ";
+            cout << "Enter new student's grade: ";
             cin >> grade;
-            cin.ignore();  // 清除輸入緩衝區
+            cin.ignore();
 
             manager.addStudent(id, name, age, grade);
         } else if (choice == 3) {
@@ -170,16 +153,15 @@ int main() {
             manager.displayAllStudents();
         } else if (choice == 5) {
             char searchId[MAX_ID_LEN];
-            cout << "請輸入要查詢的學號: ";
+            cout << "Enter the ID to Search: ";
             cin.getline(searchId, MAX_ID_LEN);
             manager.searchStudentById(searchId);
         } else if (choice == 6) {
-            cout << "程式結束，感謝使用！" << endl;
+            cout << "Program has ended." << endl;
             break;
         } else {
-            cout << "無效的選項，請重新輸入！" << endl;
+            cout << "Invalid input, please try again." << endl;
         }
     }
-
     return 0;
 }
